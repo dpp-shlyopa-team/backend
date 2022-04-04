@@ -14,4 +14,17 @@ app.add_middleware(
 
 @app.get("/")
 def get():
-  return [{'MMSI': 367078130, 'LAT': 0.06667, 'LON': -122.3886, 'Length': 40, 'Width': 10}, {'MMSI': 367078130, 'LAT': 0.06667, 'LON': -122.3886, 'Length': 40, 'Width': 10}, {'MMSI': 367078130, 'LAT': 0.06667, 'LON': -122.3886, 'Length': 40, 'Width': 10}]
+  import json
+  with open('data.json') as f:
+    r = json.loads(f.read())
+  res = [None for _ in range(len(r))]
+  
+  for i in range(len(r)):
+    res[i] = {
+      'MMSI': r[i]['MMSI'],
+      'VesselName': r[i]['VesselName'],
+      'Length': r[i]['Length'],
+      'Width': r[i]['Width']
+    }
+    
+  return res
