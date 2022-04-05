@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from functions import *
 from CONFIG import *
 
 class Database:
@@ -12,10 +11,10 @@ class Database:
     import aiomysql
     pool = await aiomysql.create_pool(
       host=config['database']['host'],
-      port=3306,                         
-      user='root',
-      password='',
-      db='dpp.shlyopa.db',
+      port=config['database']['port'],                         
+      user=config['database']['user'],
+      password=config['database']['password'],
+      db=config['database']['database'],
       loop=self.loop,
       autocommit=True
     )
