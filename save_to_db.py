@@ -2,6 +2,7 @@ import pandas as pd
 import json
 from datetime import datetime
 from tqdm import tqdm
+from CONFIG import *
 
 print('Reading df...')
 df = pd.read_csv("archive_5.zip")
@@ -21,10 +22,11 @@ df = df.sort_values(by=['MMSI', 'BaseDateTime'])
 print('Connecting db...')
 import mysql.connector as ms
 connection = ms.connect(
-    host="localhost",
-    port=3306,
-    user="root",
-    password="root",
+    host=config['database']['host'],
+    port=config['database']['port'],                         
+    user=config['database']['user'],
+    password=config['database']['password'],
+    db=config['database']['database'],
     autocommit=True
 )
 cursor = connection.cursor()
