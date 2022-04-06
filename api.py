@@ -67,6 +67,7 @@ async def get_vessel():
   r1 = await db.fetchall("SELECT MMSI FROM `dpp.shlyopa.db`.stamps")
   return r1
 
+
 @app.get("/api/vessel/{vessel_id}")
 async def get_vessel(vessel_id: int):
   db = Database() 
