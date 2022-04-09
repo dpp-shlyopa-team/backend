@@ -18,10 +18,9 @@ main {
 
 body {
 	position: relative;
-	background: url(background.png)
-		center no-repeat;
-	-webkit-background-size: cover;
-	background-size: cover;
+	background: url(tile_background.jpg) center;
+	background-size: auto;
+  opacity: 0.9;
 }
 
 

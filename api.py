@@ -23,7 +23,7 @@ templates = Jinja2Templates(directory="templates")
 @app.get("/", response_class=HTMLResponse)
 async def get_main(request: Request):
   db = Database()
-  r = await db.fetchall("SELECT * FROM `dpp.shlyopa.db`.vessels")
+  r = await db.fetchall("SELECT * FROM `dpp.shlyopa.db`.vessels WHERE LENGTH(MMSI) >= 9")
   
   fields = ['MMSI', 'VesselName', 'CallSign', 'Length', 'Width', 'Cargo', 'VesselType']
 
@@ -47,17 +47,21 @@ async def get_vessel(request: Request, vessel_id: int):
     'Length': r1[3],
     'Width': r1[4],
     'Cargo': r1[5],
-    'VesselType': r1[6],
-    'Stamps': [None] * len(r2)
+    'VesselType': r1[6]
   }
+
+
   
   fields = ['datetime', 'latitude', 'longitude']
+
+  import json
   
   return templates.TemplateResponse("vessel.html", {
     "request": request, 
     "fields": fields,
     "data": r2,
-    "main_data": a
+    "main_data": a,
+    "js_data": json.dumps([list(i)[1:] for i in r2])
   }) 
   
 @app.get("/api/vessels")
