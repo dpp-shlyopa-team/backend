@@ -25,7 +25,7 @@ async def get_main(request: Request):
   db = Database()
   r = await db.fetchall("SELECT * FROM `dpp.shlyopa.db`.vessels")
   
-  fields = ['MMSI', 'VesselName', 'CallSign', 'Length', 'Width', 'Cargo', 'VesselType', 'TranscieverClass']
+  fields = ['MMSI', 'VesselName', 'CallSign', 'Length', 'Width', 'Cargo', 'VesselType']
 
   return templates.TemplateResponse("main.html", {
     "request": request, 
@@ -48,7 +48,6 @@ async def get_vessel(request: Request, vessel_id: int):
     'Width': r1[4],
     'Cargo': r1[5],
     'VesselType': r1[6],
-    'TranscieverClass': r1[7],
     'Stamps': [None] * len(r2)
   }
   
