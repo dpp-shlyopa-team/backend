@@ -21,16 +21,24 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 @app.get("/", response_class=HTMLResponse)
-async def get_main(request: Request):
+async def get_main(request: Request, page: int = 1):
+  if (page < 1):
+    page = 1
   db = Database()
-  r = await db.fetchall("SELECT * FROM `dpp.shlyopa.db`.vessels WHERE LENGTH(MMSI) >= 9")
+  r = await db.fetchall("SELECT * FROM `dpp.shlyopa.db`.vessels WHERE LENGTH(MMSI) >= 9 LIMIT 15 OFFSET %s", [page * 15])
+  col = await db.fetchone("SELECT COUNT(*) FROM `dpp.shlyopa.db`.vessels WHERE LENGTH(MMSI) >= 9")
   
+  import math
+  col = math.floor(col[0] / 15)
+
   fields = ['MMSI', 'VesselName', 'CallSign', 'Length', 'Width', 'Cargo', 'VesselType']
 
   return templates.TemplateResponse("main.html", {
     "request": request, 
     "fields": fields,
-    "data": r
+    "data": r,
+    "col": col,
+    "page": page
   })
 
 @app.get("/vessel/{vessel_id}", response_class=HTMLResponse)
@@ -49,8 +57,6 @@ async def get_vessel(request: Request, vessel_id: int):
     'Cargo': r1[5],
     'VesselType': r1[6]
   }
-
-
   
   fields = ['datetime', 'latitude', 'longitude']
 
@@ -63,36 +69,3 @@ async def get_vessel(request: Request, vessel_id: int):
     "main_data": a,
     "js_data": json.dumps([list(i)[1:] for i in r2])
   }) 
-  
-@app.get("/api/vessels")
-async def get_vessel():
-  db = Database()
-  r1 = await db.fetchall("SELECT MMSI FROM `dpp.shlyopa.db`.stamps")
-  return r1
-
-
-@app.get("/api/vessel/{vessel_id}")
-async def get_vessel(vessel_id: int):
-  db = Database() 
-  r1 = await db.fetchone("SELECT * FROM `dpp.shlyopa.db`.vessels WHERE MMSI = %s", [vessel_id])
-  if (r1 == None):
-    raise HTTPException(404, 'Not found')
-  r2 = await db.fetchall("SELECT MMSI, VesselName, CallSign, Length, Width, Cargo, VesselType, TranscieverClass, Stamps FROM `dpp.shlyopa.db`.stamps WHERE MMSI = %s", [vessel_id])
-  a = {
-    'MMSI': r1[0],
-    'VesselName': r1[1],
-    'CallSign': r1[2],
-    'Length': r1[3],
-    'Width': r1[4],
-    'Cargo': r1[5],
-    'VesselType': r1[6],
-    'TranscieverClass': r1[7],
-    'Stamps': [None] * len(r2)
-  }
-  for i in range(len(r2)):
-    a['Stamps'][i] = {
-      'datetime': r2[i][1],
-      'latitude': r2[i][2],
-      'longitude': r2[i][3]
-    }
-  return a
