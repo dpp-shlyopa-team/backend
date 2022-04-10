@@ -6,6 +6,13 @@
   margin-top: 20px;
 }
 
+#map {
+	width: 800px;
+	height: 400px;
+	/* opacity: 1; */
+}
+
+
 main {
   width: 1000px;
   display: block;
