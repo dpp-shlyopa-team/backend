@@ -102,6 +102,7 @@
 
 <script>
   let d = JSON.parse('{{ js_data|safe }}')
+  console.log(d);
 
   ymaps.ready(init);
   function init() {

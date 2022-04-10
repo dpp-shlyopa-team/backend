@@ -12,7 +12,7 @@
 
   <link rel="stylesheet" href="/static/vessel.css">
 
-  <title>Судно #{{main_data['MMSI']}}</title>
+  <title>Судно {{main_data['VesselName']}}</title>
 </head>
 
 <body>
@@ -31,7 +31,7 @@
     </nav>
     <main>
 
-      <h1>Судно #{{main_data['MMSI']}}</h1>
+      <h1>Судно {{main_data['VesselName']}}</h1>
       <p class="text-left">
       <ul id="ul-data">
         {% for k, v in main_data.items() %}
@@ -64,6 +64,42 @@
         </tbody>
 
       </table>
+      <nav aria-label="..." id="bottom-nav">
+        <ul class="pagination justify-content-center">
+          {% if page > 1 %}
+          <li class="page-item">
+            <a class="page-link" href="/vessel/{{main_data['MMSI']}}">В начало</a>
+          </li>
+          {% endif %}
+          {% if page > 2 %}
+          <li class="page-item">
+            <a class="page-link" href="/vessel/{{main_data['MMSI']}}?page={{page - 2}}">{{page - 2}}</a>
+          </li>
+          {% endif %}
+          {% if page > 1 %}
+          <li class="page-item">
+            <a class="page-link" href="/vessel/{{main_data['MMSI']}}?page={{page - 1}}">{{page - 1}}</a>
+          </li>
+          {% endif %}
+
+          <li class="page-item active">
+            <a class="page-link" href="#">{{page}}</a>
+          </li>
+
+          {% if page + 1 <= col %} <li class="page-item">
+            <a class="page-link" href="/vessel/{{main_data['MMSI']}}?page={{page + 1}}">{{page + 1}}</a>
+            </li>
+            {% endif %}
+            {% if page + 2 <= col %} <li class="page-item">
+              <a class="page-link" href="/vessel/{{main_data['MMSI']}}?page={{page + 2}}">{{page + 2}}</a>
+              </li>
+              {% endif %}
+              {% if page < col %} <li class="page-item">
+                <a class="page-link" href="/vessel/{{main_data['MMSI']}}?page={{col}}">В конец</a>
+                </li>
+                {% endif %}
+        </ul>
+      </nav>
     </main>
   </div>
 </body>
