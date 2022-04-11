@@ -96,7 +96,7 @@ async def get_vessel(request: Request, vessel_id: int, page: int = 1):
   }
 
   import math
-  col = math.floor(len(r2) / 15)
+  col = math.ceil(len(r2) / 15)
   
   fields = ['datetime', 'latitude', 'longitude']
 

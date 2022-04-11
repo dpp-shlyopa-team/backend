@@ -1,14 +1,14 @@
 #map-wrapper {
-  background-color: rgb(150, 200, 212);
-  width: 800px;
-  height: 400px;
-  margin: auto;
-  margin-top: 20px;
+	background-color: rgba(180, 212, 241, 0);
+	width: 1000px;
+	height: 450px;
+	margin: auto;
+	margin-top: 20px;
 }
 
 #map {
-	width: 800px;
-	height: 400px;
+	width: 1000px;
+	height: 450px;
 	/* opacity: 1; */
 }
 
@@ -27,8 +27,21 @@ body {
 	position: relative;
 	background: url(tile_background.jpg) center;
 	background-size: auto;
-  opacity: 0.9;
+	/* opacity: 0.9; */
 }
+
+
+body:after {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(255, 255, 255, 0.267);
+	z-index: 2;
+}
+
 
 
 
