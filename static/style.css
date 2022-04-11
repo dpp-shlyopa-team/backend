@@ -6,6 +6,13 @@
   margin-top: 20px;
 }
 
+#map {
+	width: 800px;
+	height: 400px;
+	/* opacity: 1; */
+}
+
+
 main {
   width: 1000px;
   display: block;
@@ -18,10 +25,9 @@ main {
 
 body {
 	position: relative;
-	background: url(background.png)
-		center no-repeat;
-	-webkit-background-size: cover;
-	background-size: cover;
+	background: url(tile_background.jpg) center;
+	background-size: auto;
+  opacity: 0.9;
 }
 
 

@@ -5,15 +5,19 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
+  <link rel="stylesheet" href="/static/style.css">
 
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
+<<<<<<< HEAD
   <title>
     <dpp class="shlyopa team"></dpp>
   </title>
+=======
+  <title>Все суда</title>
+>>>>>>> ba71fcd9f31d951078cfaca0d4558ec0e547618f
 </head>
 
 <body>
@@ -32,6 +36,7 @@
     <main>
       <h1 id="main-title">Все суда</h1>
       <div id="map-wrapper">
+<<<<<<< HEAD
 
       </div>
 
@@ -64,3 +69,130 @@
 </div>
 
 </html>
+=======
+        <div id="map"></div>
+      </div>
+
+      <table class="table">
+        <thead>
+          <tr id="heading">
+            {% for i in fields %}
+            <th scope="col">{{i}}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in data %}
+          <tr>
+            <th scope="row"><a href="/vessel/{{i[0]}}">{{i[0]}}</a></th>
+            {% for j in i[1:] %}
+            <td>{{j}}</td>
+            {% endfor %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <nav aria-label="..." id="bottom-nav">
+        <ul class="pagination justify-content-center">
+          {% if page > 1 %}
+          <li class="page-item">
+            <a class="page-link" href="/">В начало</a>
+          </li>
+          {% endif %}
+          {% if page > 2 %}
+          <li class="page-item">
+            <a class="page-link" href="/?page={{page - 2}}">{{page - 2}}</a>
+          </li>
+          {% endif %}
+          {% if page > 1 %}
+          <li class="page-item">
+            <a class="page-link" href="/?page={{page - 1}}">{{page - 1}}</a>
+          </li>
+          {% endif %}
+
+          <li class="page-item active">
+            <a class="page-link" href="#">{{page}}</a>
+          </li>
+
+          {% if page + 1 <= col %} <li class="page-item">
+            <a class="page-link" href="/?page={{page + 1}}">{{page + 1}}</a>
+            </li>
+            {% endif %}
+            {% if page + 2 <= col %} <li class="page-item">
+              <a class="page-link" href="/?page={{page + 2}}">{{page + 2}}</a>
+              </li>
+              {% endif %}
+              {% if page < col %} <li class="page-item">
+                <a class="page-link" href="/?page={{col}}">В конец</a>
+                </li>
+                {% endif %}
+        </ul>
+      </nav>
+    </main>
+
+</body>
+</div>
+
+</html>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="https://api-maps.yandex.ru/2.1/?apikey=d98bb7d5-adb4-4266-bc47-80e431ac94be&lang=ru_RU"
+  type="text/javascript"></script>
+
+<script>
+  let d = JSON.parse('{{ js_data|safe }}')
+  console.log(d);
+
+  ymaps.ready(init);
+  function init() {
+    // Создаем карту.
+    var myMap = new ymaps.Map("map", {
+      center: [0, 0],
+      zoom: 0
+    }, {
+      searchControlProvider: 'yandex#search'
+    });
+
+    // Создаем ломаную с помощью вспомогательного класса Polyline.
+
+
+    for (let i = 0; i < d.length; i++) {
+      var myPolyline = new ymaps.Polyline(d[i], {
+      }, {
+        // Задаем опции геообъекта.
+        // Отключаем кнопку закрытия балуна.
+        balloonCloseButton: false,
+        // Цвет линии.
+        strokeColor: "#000000",
+        // Ширина линии.
+        strokeWidth: 4,
+        // Коэффициент прозрачности.
+        strokeOpacity: 0.5
+      });
+
+      // Добавляем линии на карту.
+      myMap.geoObjects.add(myPolyline);
+    }
+
+    JSON.parse(`{{ main_map|safe }}`).forEach(i => {
+      let myPlacemark = new ymaps.Placemark([i[1], i[2]], {
+        hintContent: 'Собственный значок метки',
+        balloonContent: 'Это красивая метка'
+      }, {
+        // Опции.
+        // Необходимо указать данный тип макета.
+        iconLayout: 'default#image',
+        // Своё изображение иконки метки.
+        iconImageHref: '/static/ship.png',
+        // Размеры метки.
+        iconImageSize: [20, 20],
+        // Смещение левого верхнего угла иконки относительно
+        // её "ножки" (точки привязки).
+        iconImageOffset: [-10, -10]
+      });
+      myMap.geoObjects.add(myPlacemark);
+    });
+  }
+</script>
+>>>>>>> ba71fcd9f31d951078cfaca0d4558ec0e547618f

@@ -6,26 +6,37 @@
 	margin-top: 20px;
 }
 
-
+#map {
+	width: 800px;
+	height: 400px;
+	/* opacity: 1; */
+}
 
 body {
 	position: relative;
-	background: url(background.png)
-		center no-repeat;
-	-webkit-background-size: cover;
-	background-size: cover;
-    opacity: 0.9;
+	background: url(tile_background.jpg) center;
+	background-size: auto;
+	/* opacity: 0.9; */
 }
 
+
+body:after {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(255, 255, 255, 0.267);
+	z-index: 2;
+}
 
 
 .inner {
 	position: relative;
 	z-index: 3;
-	color: rgb(11, 11, 11);
 	text-align: center;
 	padding: 50px;
-
 }
 
 table, th, tbody {
@@ -43,4 +54,16 @@ h1 {
 
 table {
     opacity: 0.9;
+		max-width: 900px !important;
+		margin: auto;
+
+}
+
+#ul-data li {
+	text-align: left;
+	font-size: 18px;
+}
+
+#ul-data {
+	list-style-type: none;
 }
