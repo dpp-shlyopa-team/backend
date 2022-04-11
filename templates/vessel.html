@@ -111,7 +111,7 @@
 <script src="https://api-maps.yandex.ru/2.1/?apikey=d98bb7d5-adb4-4266-bc47-80e431ac94be&lang=ru_RU"
   type="text/javascript"></script>
 
-<script> 
+<script>
   let d = JSON.parse('{{ js_data|safe }}');
   let lx = d[0][0];
   let ly = d[d.length - 1][0];
@@ -170,8 +170,6 @@
     });
 
     myPlacemark = new ymaps.Placemark(d[d.length - 1], {
-      hintContent: 'Собственный значок метки',
-      balloonContent: 'Это красивая метка'
     }, {
       // Опции.
       // Необходимо указать данный тип макета.
@@ -187,6 +185,6 @@
 
       // Добавляем линии на карту.
       myMap.geoObjects.add(myPolyline);
-      myMap.geoObjects.add(myPlacemark);
+    myMap.geoObjects.add(myPlacemark);
   }
 </script>
