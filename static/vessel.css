@@ -16,7 +16,12 @@ body {
 	position: relative;
 	background: url(tile_background.jpg) center;
 	background-size: auto;
+	min-width: 1100px;
 	/* opacity: 0.9; */
+}
+
+.navbar-toggler {
+	display: none;
 }
 
 
