@@ -20,6 +20,25 @@ app.add_middleware(
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
+def rotate_img(x1, y1, x2, y2):
+  print(x1, y1, x2, y2)
+  from PIL import Image
+  import math, uuid
+  x2 -= x1
+  y2 -= y1
+  x1 = 0
+  y1 = 0
+  print(x1, y1, x2, y2)
+  angle = math.degrees(math.atan2(y2 - y1, x2 - x1))
+  if (angle < 0):
+    angle = 360 + angle * -1
+  else:
+    angle += 90
+  print(angle)
+  fname = 'static/ships/' + str(uuid.uuid1()) + '.png'
+  Image.open("static/ship.png").rotate(angle).save(fname)
+  return fname
+
 @app.get("/", response_class=HTMLResponse)
 async def get_main(request: Request, page: int = 1):
   if (page < 1):
@@ -41,6 +60,9 @@ async def get_main(request: Request, page: int = 1):
   # for i in r3[:20]:
   #   js_data[i[0]].append([i[1], i[2]])
 
+  with open('main_map.json') as f:
+    main_map = f.read()
+
   import json
 
   return templates.TemplateResponse("main.html", {
@@ -49,7 +71,8 @@ async def get_main(request: Request, page: int = 1):
     "data": r,
     "col": col,
     "page": page,
-    "js_data": json.dumps(list(js_data.values()))
+    "js_data": json.dumps(list(js_data.values())),
+    "main_map": main_map
   })
 
 @app.get("/vessel/{vessel_id}", response_class=HTMLResponse)
@@ -86,10 +109,6 @@ async def get_vessel(request: Request, vessel_id: int, page: int = 1):
     "main_data": a,
     "js_data": json.dumps([list(i)[1:] for i in r2]),
     "page": page + 1,
-    "col": col
+    "col": col,
+    "img_name": rotate_img(r2[-2][1], r2[-2][2], r2[-1][1], r2[-1][2])
   }) 
-
-
-@app.get("/1")
-async def q():
-  return "1"

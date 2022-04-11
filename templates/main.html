@@ -134,5 +134,24 @@
       // Добавляем линии на карту.
       myMap.geoObjects.add(myPolyline);
     }
+
+    JSON.parse(`{{ main_map|safe }}`).forEach(i => {
+      let myPlacemark = new ymaps.Placemark([i[1], i[2]], {
+        hintContent: 'Собственный значок метки',
+        balloonContent: 'Это красивая метка'
+      }, {
+        // Опции.
+        // Необходимо указать данный тип макета.
+        iconLayout: 'default#image',
+        // Своё изображение иконки метки.
+        iconImageHref: '/static/ship.png',
+        // Размеры метки.
+        iconImageSize: [20, 20],
+        // Смещение левого верхнего угла иконки относительно
+        // её "ножки" (точки привязки).
+        iconImageOffset: [-10, -10]
+      });
+      myMap.geoObjects.add(myPlacemark);
+    });
   }
 </script>

@@ -111,8 +111,8 @@
 <script src="https://api-maps.yandex.ru/2.1/?apikey=d98bb7d5-adb4-4266-bc47-80e431ac94be&lang=ru_RU"
   type="text/javascript"></script>
 
-<script>
-  let d = JSON.parse('{{ js_data|safe }}')
+<script> 
+  let d = JSON.parse('{{ js_data|safe }}');
   let lx = d[0][0];
   let ly = d[d.length - 1][0];
   let rx = d[0][1];
@@ -171,7 +171,24 @@
       strokeOpacity: 0.5
     });
 
-    // Добавляем линии на карту.
-    myMap.geoObjects.add(myPolyline);
+    myPlacemark = new ymaps.Placemark(d[d.length - 1], {
+      hintContent: 'Собственный значок метки',
+      balloonContent: 'Это красивая метка'
+    }, {
+      // Опции.
+      // Необходимо указать данный тип макета.
+      iconLayout: 'default#image',
+      // Своё изображение иконки метки.
+      iconImageHref: '/{{img_name|safe}}',
+      // Размеры метки.
+      iconImageSize: [70, 70],
+      // Смещение левого верхнего угла иконки относительно
+      // её "ножки" (точки привязки).
+      iconImageOffset: [-35, -35]
+    }),
+
+      // Добавляем линии на карту.
+      myMap.geoObjects.add(myPolyline);
+      myMap.geoObjects.add(myPlacemark);
   }
 </script>
